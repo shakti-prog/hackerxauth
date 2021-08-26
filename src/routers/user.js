@@ -13,6 +13,7 @@ router.post('/users',async (req,res)=>{
         const token = await user.generateAuthToken()
         res.status(201).send({user,token})
     }catch(e){
+        console.log(e)
         res.status(400).send(e)
     }
 
@@ -20,17 +21,18 @@ router.post('/users',async (req,res)=>{
 
 
 //Login
+var ret = true
 router.post('/users/login',async (req,res)=>{
     try{
         const user = await User.findByCredentials(req.body.email,req.body.password)
         const token = await user.generateAuthToken()
         if(!user){
-            res.send("No user!")
+            ret = false
         }
-        res.send({user,token})
+        res.send({user,token,ret})
     }catch(e){
         console.log(e)
-        res.status(400).send()
+        res.send(ret)
     }
 })
 
@@ -42,7 +44,7 @@ router.post('/users/logout',auth,async (req,res)=>{
             return token.token!==req.token
         })
         await req.user.save()
-        res.send()
+        res.status(200).send()
     }
     catch(e){
         res.status(500).send(e)
@@ -54,7 +56,7 @@ router.post('/users/logoutall',auth,async (req,res)=>{
     try{
         req.user.tokens = []
         await req.user.save()
-        res.send()
+        res.status(200).send()
     }catch(e){
         res.status(500).send(e)
     }
@@ -93,6 +95,7 @@ router.patch('/users/me', auth, async (req, res)=>{
         res.status(400).send(e)
     }
 })
+
 
 router.delete('/users/me', auth, async (req,res)=>{
     try{
@@ -147,5 +150,16 @@ router.get('/users/:id/avatar', async (req,res)=>{
         res.status(400).send()
     }
 })
+
+router.patch('/users/me/rating', auth, async (req,res)=>{
+    try{
+        req.user.productRatings.push(req.body)
+        await req.user.save()
+        res.status(200).send()
+    }catch(e){
+        res.status(404).send(e)
+    }
+})
+
 
 module.exports = router
