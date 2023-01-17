@@ -1,6 +1,8 @@
 # Recommendation-System
 
-This is a recommendation system created for an ecommerce website. The website uses collaborative filtering for the recommendations. The algorithm used is Matrix Factorization. 
+This repo is a part of a recommendation system project created for an ecommerce website. The website uses collaborative filtering for the recommendations. The algorithm used is Matrix Factorization. 
+
+The code here is implemented in NodeJS and is used for authentication as well as other transaction related use cases.
 
 You can find below the process flow of the project:
 ![image](https://user-images.githubusercontent.com/86973280/212533184-38303642-e596-47a8-a868-88311fdbf055.png)
